@@ -3,7 +3,7 @@ import os
 import uuid
 import shutil
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
-
+from pytube import YouTube
 app = Flask(__name__)
 
 # Auto usage folder
@@ -55,10 +55,10 @@ def home():
             os.makedirs(session_folder, exist_ok=True)
 
             # ---- YouTube Download (Disabled for safety) ----
-            # from pytube import YouTube
-            # yt = YouTube(url)
-            # stream = yt.streams.get_highest_resolution()
-            # video_path = stream.download(output_path=session_folder, filename="video.mp4")
+             
+            yt = YouTube(url)
+            stream = yt.streams.get_highest_resolution()
+            video_path = stream.download(output_path=session_folder, filename="video.mp4")
 
             # Demo placeholder video path
             video_path = "sample.mp4"  # replace with real video
