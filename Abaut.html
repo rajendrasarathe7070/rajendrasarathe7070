@@ -1,106 +1,73 @@
-<!DOCTYPE html><html lang="en">
+from flask import Flask
+
+app = Flask(__name__)
+
+html_page = """
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rajendra Sen | Portfolio</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f6f8;
-      color: #333;
-    }
-    header {
-      background: #1e293b;
-      color: #fff;
-      padding: 30px 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 32px;
-    }
-    header p {
-      margin-top: 8px;
-      font-size: 16px;
-      opacity: 0.9;
-    }
-    section {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 20px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-    }
-    .card h2 {
-      margin-top: 0;
-      color: #1e293b;
-    }
-    ul {
-      padding-left: 20px;
-    }
-    footer {
-      background: #e2e8f0;
-      text-align: center;
-      padding: 15px;
-      font-size: 14px;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 16px;
-      background: #2563eb;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 6px;
-    }
-    .btn:hover {
-      background: #1d4ed8;
-    }
-  </style>
+<title>Rajendra Sen Resume</title>
+<style>
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    padding: 40px;
+}
+.container {
+    max-width: 700px;
+    margin: auto;
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 10px;
+}
+h1 {
+    color: #38bdf8;
+}
+</style>
 </head>
-<body>  <header>
-    <h1>Rajendra Sen</h1>
-    <p>Diploma in Computer Science | Coding Student</p>
-  </header>  <section>
-    <div class="card">
-      <h2>About Me</h2>
-      <p>
-        Hello! My name is Rajendra Sen. I am a Computer Science diploma holder and a coding student. 
-        I am interested in software development, backend systems, and computer system organization.
-      </p>
-    </div><div class="card">
-  <h2>Skills</h2>
-  <ul>
-    <li>Python Programming</li>
-    <li>C Programming</li>
-    <li>Basic Web Development (HTML, CSS)</li>
-    <li>Backend Concepts</li>
-  </ul>
-</div>
+<body>
+<div class="container">
+    
+    <h1>Rajendra Sen</h1><hr>
+    
+    
 
-<div class="card">
-  <h2>Projects & Interests</h2>
-  <ul>
-    <li>Learning Backend Development</li>
-    <li>Embedded Systems Simulator (Learning Phase)</li>
-    <li>Computer Architecture & System Organization</li>
-  </ul>
-</div>
+    <h2>Skills</h2>
+    <ul>
+        <li>Python language</li>
+        <li>Sql lamguage</li>
+        <li>C language </li>
+        <li>Web Development</li>
+    </ul>
+    
+        <h2>Tools</h2>
+    <ul>
+        <li>Advance excel</li>
+        <li>Pawer BI </li>
+ 
+    </ul>
+    
+    
 
-<div class="card">
-  <h2>Contact</h2>
-  <p>Email: your-email@example.com</p>
-  <p>GitHub: https://github.com/your-username</p>
-  <a class="btn" href="#">Contact Me</a>
-</div>
+    <h2>Projects</h2>
+    <ul>
+        <li>AI Chatbot</li>
+        <li>Student Management System</li>
+        
+        <li>Embedded Systems Simulator</li>
+        <li>Banking System simulator </li>
+    </ul>
 
-  </section>  <footer>
-    © 2026 Rajendra Sen | Simple Frontend Website
-  </footer></body>
+    <h2>Contact</h2>
+    <p>Email: rajendra@example.com</p>
+</div>
+</body>
 </html>
+"""
+
+@app.route("/")
+def home():
+    return html_page
+
+app.run(host="0.0.0.0", port=5000)
