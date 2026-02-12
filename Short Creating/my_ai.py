@@ -77,7 +77,7 @@ def home():
             msg = f"{len(clips)} clips created successfully!"
 
             # After sending clips, delete folder (auto cleanup)
-            # shutil.rmtree(session_folder)
+            shutil.rmtree(session_folder)
 
         except Exception as e:
             msg = f"❌ Error: {str(e)}"
