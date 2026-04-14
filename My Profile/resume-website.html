@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anu — Full Stack Developer</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #090c14;
+    --bg2: #0d1120;
+    --card: rgba(255,255,255,0.04);
+    --border: rgba(0,230,180,0.18);
+    --accent: #00e6b4;
+    --accent2: #7b5ea7;
+    --text: #e8eaf2;
+    --muted: #7a849a;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    overflow-x: hidden;
+  }
+
+  /* ── GRID NOISE BACKGROUND ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,230,180,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,230,180,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAVBAR ── */
+  .navbar {
+    background: rgba(9,12,20,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .navbar-brand {
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: var(--accent) !important;
+    letter-spacing: 2px;
+  }
+  .nav-link {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted) !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    margin: 0 6px;
+  }
+  .nav-link:hover { color: var(--accent) !important; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    padding: 120px 0 80px;
+  }
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+  .hero-name {
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -2px;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.4s forwards;
+  }
+  .hero-name span { color: var(--accent); }
+  .hero-role {
+    font-family: var(--mono);
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    color: var(--muted);
+    margin-top: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.6s forwards;
+  }
+  #typed-text { color: var(--accent); }
+  .cursor { animation: blink 0.8s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 480px;
+    line-height: 1.8;
+    margin-top: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.8s forwards;
+  }
+  .hero-btns {
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 1s forwards;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn-accent {
+    background: var(--accent);
+    color: #000;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    border: none;
+    padding: 0.75rem 1.8rem;
+    border-radius: 2px;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+  .btn-accent:hover { background: #00ffd0; transform: translateY(-2px); }
+  .btn-outline-accent {
+    background: transparent;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    border: 1px solid var(--accent);
+    padding: 0.75rem 1.8rem;
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .btn-outline-accent:hover { background: rgba(0,230,180,0.1); color: var(--accent); }
+
+  /* HERO VISUAL */
+  .hero-visual {
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 1s 1.2s forwards;
+  }
+  .hero-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(0,230,180,0.06) 0%, transparent 60%);
+  }
+  .stat-row { display: flex; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .stat-box {
+    background: rgba(0,230,180,0.06);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.4rem;
+    flex: 1;
+    min-width: 100px;
+  }
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .tech-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+  .tech-pill {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 1px;
+    transition: all 0.2s;
+  }
+  .tech-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── SECTIONS ── */
+  section { position: relative; z-index: 1; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+  }
+  .section-divider {
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  /* ── GLASS CARD ── */
+  .glass-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    backdrop-filter: blur(10px);
+    transition: border-color 0.3s, transform 0.3s;
+    height: 100%;
+  }
+  .glass-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+  }
+
+  /* ── SKILLS ── */
+  #skills { padding: 100px 0; background: var(--bg2); }
+  .skill-item { margin-bottom: 1.4rem; }
+  .skill-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .skill-header span:last-child { color: var(--accent); }
+  .skill-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    width: 0;
+    transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* TOOL BADGES */
+  .tool-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin: 4px;
+    transition: all 0.2s;
+  }
+  .tool-badge:hover { border-color: var(--accent); color: var(--accent); }
+  .tool-badge i { color: var(--accent); font-size: 0.85rem; }
+
+  /* ── PROJECTS ── */
+  #projects { padding: 100px 0; }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s;
+    height: 100%;
+  }
+  .project-card:hover { border-color: var(--accent); transform: translateY(-6px); }
+  .project-thumb {
+    height: 160px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+  }
+  .project-thumb.c1 { background: linear-gradient(135deg,#0d1a2e,#0a2a1e); }
+  .project-thumb.c2 { background: linear-gradient(135deg,#1a0d2e,#0d1a2e); }
+  .project-thumb.c3 { background: linear-gradient(135deg,#2e1a0d,#1a0d2e); }
+  .project-thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, var(--bg) 100%);
+  }
+  .project-body { padding: 1.5rem; }
+  .project-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .project-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+  .project-tag {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    padding: 3px 8px;
+    background: rgba(0,230,180,0.08);
+    border: 1px solid rgba(0,230,180,0.2);
+    border-radius: 3px;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+  }
+  .project-links { display: flex; gap: 0.8rem; }
+  .project-link {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .project-link:hover { color: var(--accent); }
+
+  /* ── TIMELINE (Education/Experience) ── */
+  #timeline { padding: 100px 0; background: var(--bg2); }
+  .timeline-line {
+    position: relative;
+    padding-left: 2.5rem;
+  }
+  .timeline-line::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.6s;
+  }
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+  .timeline-dot {
+    position: absolute;
+    left: -2.5rem;
+    top: 6px;
+    width: 16px;
+    height: 16px;
+    background: var(--bg2);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+  }
+  .timeline-dot::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .timeline-year {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    margin-bottom: 0.3rem;
+  }
+  .timeline-title { font-size: 1rem; font-weight: 700; }
+  .timeline-sub {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+  .timeline-body {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 0.7rem;
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT ── */
+  #contact { padding: 100px 0; }
+  .contact-form input,
+  .contact-form textarea {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--sans);
+    padding: 0.85rem 1.2rem;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder { color: var(--muted); }
+  .contact-form input:focus,
+  .contact-form textarea:focus { border-color: var(--accent); }
+  .contact-form textarea { min-height: 140px; resize: vertical; }
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    transition: color 0.2s;
+  }
+  .social-link:hover { color: var(--accent); }
+  .social-link i { font-size: 1.1rem; width: 20px; color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    z-index: 1;
+    position: relative;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(24px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  /* FLOATING ORBS */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb1 { width:400px; height:400px; background:rgba(0,230,180,0.04); top:-100px; right:-100px; }
+  .orb2 { width:300px; height:300px; background:rgba(123,94,167,0.05); bottom:100px; left:-100px; }
+
+  /* MOBILE */
+  @media(max-width: 768px) {
+    .hero-name { font-size: 2.6rem; }
+    #hero { padding-top: 80px; }
+    .hero-visual { margin-top: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ORBS -->
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="#">&lt;ANU /&gt;</a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <i class="fas fa-bars" style="color:var(--accent)"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+        <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="#timeline">Education</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+      <a href="#" class="btn-accent ms-3 d-none d-lg-inline-block" style="padding:0.5rem 1.2rem;border-radius:2px;font-family:var(--mono);font-size:0.75rem;font-weight:700;text-decoration:none;color:#000;">
+        Download CV
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <p class="hero-label">// Available for Hire</p>
+        <h1 class="hero-name">Anu<br><span>Sharma</span></h1>
+        <p class="hero-role">
+          &gt; <span id="typed-text"></span><span class="cursor">_</span>
+        </p>
+        <p class="hero-desc">
+          Diploma CSE student from Indore building real-world full-stack apps. 
+          Django · Flask · React · Supabase. Turning ideas into deployed products.
+        </p>
+        <div class="hero-btns">
+          <a href="#projects" class="btn-accent">View Projects</a>
+          <a href="#contact" class="btn-outline-accent">Get In Touch</a>
+        </div>
+      </div>
+      <div class="col-lg-6 hero-visual">
+        <div class="hero-card">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></div>
+            <div style="width:10px;height:10px;border-radius:50%;background:#febc2e"></div>
+            <div style="width:10px;height:10px;border-radius:50%;background:#28c840"></div>
+            <span style="font-family:var(--mono);font-size:0.68rem;color:var(--muted);margin-left:8px">portfolio.py</span>
+          </div>
+          <pre style="font-family:var(--mono);font-size:0.78rem;color:var(--muted);line-height:1.8;margin:0"><span style="color:#7b5ea7">class</span> <span style="color:var(--accent)">Developer</span>:
+  name = <span style="color:#f0a070">"Anu Sharma"</span>
+  location = <span style="color:#f0a070">"Indore, MP 🇮🇳"</span>
+  stack = [<span style="color:#f0a070">"Django"</span>, <span style="color:#f0a070">"Flask"</span>,
+           <span style="color:#f0a070">"React"</span>, <span style="color:#f0a070">"PostgreSQL"</span>]
+  building = <span style="color:#f0a070">"Cameramen Hub"</span>
+
+  <span style="color:#7b5ea7">def</span> <span style="color:var(--accent)">hire_me</span>(self):
+    <span style="color:#7b5ea7">return</span> <span style="color:#f0a070">"Let's build something!"</span></pre>
+          <div class="stat-row">
+            <div class="stat-box">
+              <div class="stat-num">3+</div>
+              <div class="stat-label">Live Projects</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">2yr</div>
+              <div class="stat-label">Experience</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-num">10+</div>
+              <div class="stat-label">Tech Stack</div>
+            </div>
+          </div>
+          <div class="tech-pills mt-3">
+            <span class="tech-pill">Django</span>
+            <span class="tech-pill">Flask</span>
+            <span class="tech-pill">React</span>
+            <span class="tech-pill">Supabase</span>
+            <span class="tech-pill">Render</span>
+            <span class="tech-pill">Cloudinary</span>
+            <span class="tech-pill">Python</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" style="padding:100px 0; background:var(--bg2)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5 reveal">
+        <p class="section-label">// Who I Am</p>
+        <h2 class="section-title">About <span style="color:var(--accent)">Me</span></h2>
+        <div class="section-divider"></div>
+        <p style="color:var(--muted);line-height:1.9;font-size:0.95rem;margin-bottom:1rem">
+          I'm a Diploma in CSE student from Indore building production-grade full-stack apps. 
+          My focus is on building real products — not just practice projects — that solve real problems 
+          for Indian markets.
+        </p>
+        <p style="color:var(--muted);line-height:1.9;font-size:0.95rem;margin-bottom:2rem">
+          Currently building <strong style="color:var(--text)">Cameramen Hub</strong>, a marketplace platform 
+          for photographers & videographers in tier-2 Indian cities, and exploring SaaS opportunities.
+        </p>
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="glass-card" style="padding:1rem 1.3rem">
+              <i class="fas fa-map-marker-alt" style="color:var(--accent);margin-bottom:0.5rem"></i>
+              <div style="font-size:0.8rem;color:var(--muted)">Location</div>
+              <div style="font-size:0.9rem;font-weight:600">Indore, MP</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="glass-card" style="padding:1rem 1.3rem">
+              <i class="fas fa-graduation-cap" style="color:var(--accent);margin-bottom:0.5rem"></i>
+              <div style="font-size:0.8rem;color:var(--muted)">Education</div>
+              <div style="font-size:0.9rem;font-weight:600">Diploma CSE</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="glass-card" style="padding:1rem 1.3rem">
+              <i class="fas fa-code" style="color:var(--accent);margin-bottom:0.5rem"></i>
+              <div style="font-size:0.8rem;color:var(--muted)">Specialty</div>
+              <div style="font-size:0.9rem;font-weight:600">Full Stack</div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="glass-card" style="padding:1rem 1.3rem">
+              <i class="fas fa-briefcase" style="color:var(--accent);margin-bottom:0.5rem"></i>
+              <div style="font-size:0.8rem;color:var(--muted)">Available</div>
+              <div style="font-size:0.9rem;font-weight:600;color:var(--accent)">Open to Work</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 reveal" style="padding-left:3rem;margin-top:0">
+        <div class="glass-card mt-5 mt-lg-0">
+          <p class="section-label">// Interests & Areas</p>
+          <div class="row g-3 mt-1">
+            <div class="col-6">
+              <div style="padding:1rem;background:rgba(0,230,180,0.05);border:1px solid var(--border);border-radius:8px">
+                <i class="fas fa-camera" style="color:var(--accent);font-size:1.3rem"></i>
+                <div style="font-weight:600;margin-top:0.5rem;font-size:0.9rem">Photography Tech</div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-top:3px">Marketplace platforms for creatives</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div style="padding:1rem;background:rgba(123,94,167,0.05);border:1px solid rgba(123,94,167,0.2);border-radius:8px">
+                <i class="fas fa-robot" style="color:var(--accent2);font-size:1.3rem"></i>
+                <div style="font-weight:600;margin-top:0.5rem;font-size:0.9rem">AI Integration</div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-top:3px">Multi-model AI apps & chatbots</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div style="padding:1rem;background:rgba(0,230,180,0.05);border:1px solid var(--border);border-radius:8px">
+                <i class="fas fa-server" style="color:var(--accent);font-size:1.3rem"></i>
+                <div style="font-weight:600;margin-top:0.5rem;font-size:0.9rem">DevOps / Deploy</div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-top:3px">Render, Vercel, Supabase, Cloudinary</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div style="padding:1rem;background:rgba(123,94,167,0.05);border:1px solid rgba(123,94,167,0.2);border-radius:8px">
+                <i class="fas fa-store" style="color:var(--accent2);font-size:1.3rem"></i>
+                <div style="font-weight:600;margin-top:0.5rem;font-size:0.9rem">SaaS / Business</div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-top:3px">Tier-2 India market focus</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="padding:100px 0;">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">// What I Know</p>
+      <h2 class="section-title">Technical <span style="color:var(--accent)">Skills</span></h2>
+      <div class="section-divider mx-auto"></div>
+    </div>
+    <div class="row g-5 mt-2">
+      <div class="col-lg-6 reveal">
+        <h5 style="font-family:var(--mono);font-size:0.75rem;letter-spacing:3px;color:var(--muted);margin-bottom:2rem;text-transform:uppercase">Languages & Frameworks</h5>
+        <div class="skill-item">
+          <div class="skill-header"><span>Python / Django</span><span>90%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="90"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>Flask</span><span>85%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="85"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>JavaScript / HTML / CSS</span><span>80%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="80"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>React / Bootstrap</span><span>70%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="70"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>REST APIs / DRF</span><span>82%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="82"></div></div>
+        </div>
+      </div>
+      <div class="col-lg-6 reveal">
+        <h5 style="font-family:var(--mono);font-size:0.75rem;letter-spacing:3px;color:var(--muted);margin-bottom:2rem;text-transform:uppercase">Infrastructure & Tools</h5>
+        <div class="skill-item">
+          <div class="skill-header"><span>PostgreSQL / Supabase</span><span>78%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="78"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>Git / GitHub</span><span>85%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="85"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>Cloudinary / Media</span><span>75%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="75"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>Render / Vercel Deploy</span><span>72%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="72"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>AI API Integration</span><span>68%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-w="68"></div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Tool Badges -->
+    <div class="reveal mt-5">
+      <h5 style="font-family:var(--mono);font-size:0.75rem;letter-spacing:3px;color:var(--muted);margin-bottom:1.5rem;text-transform:uppercase">// Tools I Use</h5>
+      <div>
+        <span class="tool-badge"><i class="fab fa-python"></i>Python</span>
+        <span class="tool-badge"><i class="fas fa-fire"></i>Django</span>
+        <span class="tool-badge"><i class="fas fa-flask"></i>Flask</span>
+        <span class="tool-badge"><i class="fab fa-react"></i>React</span>
+        <span class="tool-badge"><i class="fab fa-js"></i>JavaScript</span>
+        <span class="tool-badge"><i class="fas fa-database"></i>Supabase</span>
+        <span class="tool-badge"><i class="fas fa-cloud"></i>Cloudinary</span>
+        <span class="tool-badge"><i class="fab fa-git-alt"></i>Git</span>
+        <span class="tool-badge"><i class="fab fa-github"></i>GitHub</span>
+        <span class="tool-badge"><i class="fas fa-server"></i>Render</span>
+        <span class="tool-badge"><i class="fas fa-bolt"></i>Vercel</span>
+        <span class="tool-badge"><i class="fas fa-robot"></i>OpenAI API</span>
+        <span class="tool-badge"><i class="fab fa-bootstrap"></i>Bootstrap</span>
+        <span class="tool-badge"><i class="fas fa-layer-group"></i>REST DRF</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" style="padding:100px 0; background:var(--bg2)">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">// What I've Built</p>
+      <h2 class="section-title">Featured <span style="color:var(--accent)">Projects</span></h2>
+      <div class="section-divider mx-auto"></div>
+    </div>
+    <div class="row g-4 mt-2">
+
+      <div class="col-lg-4 col-md-6 reveal">
+        <div class="project-card">
+          <div class="project-thumb c1">📸</div>
+          <div class="project-body">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div class="project-title">Cameramen Hub</div>
+              <span style="font-family:var(--mono);font-size:0.6rem;padding:3px 8px;background:rgba(0,230,180,0.1);border:1px solid var(--accent);border-radius:3px;color:var(--accent)">LIVE</span>
+            </div>
+            <p class="project-desc">Photographer & videographer marketplace for tier-2 Indian cities. Booking system, portfolios, and real-time availability.</p>
+            <div class="project-tags">
+              <span class="project-tag">Django</span>
+              <span class="project-tag">DRF</span>
+              <span class="project-tag">Supabase</span>
+              <span class="project-tag">Cloudinary</span>
+              <span class="project-tag">Render</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i>Live Demo</a>
+              <a href="#" class="project-link"><i class="fab fa-github"></i>GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 reveal">
+        <div class="project-card">
+          <div class="project-thumb c2">🔗</div>
+          <div class="project-body">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div class="project-title">LensConnect</div>
+              <span style="font-family:var(--mono);font-size:0.6rem;padding:3px 8px;background:rgba(123,94,167,0.1);border:1px solid var(--accent2);border-radius:3px;color:var(--accent2)">WIP</span>
+            </div>
+            <p class="project-desc">Social platform for Indian camera professionals with AI photo analysis, location-based maps, and gig boards.</p>
+            <div class="project-tags">
+              <span class="project-tag">Flask</span>
+              <span class="project-tag">AI API</span>
+              <span class="project-tag">Maps</span>
+              <span class="project-tag">PostgreSQL</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i>Live Demo</a>
+              <a href="#" class="project-link"><i class="fab fa-github"></i>GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 reveal">
+        <div class="project-card">
+          <div class="project-thumb c3">🎬</div>
+          <div class="project-body">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div class="project-title">Frame Studio</div>
+              <span style="font-family:var(--mono);font-size:0.6rem;padding:3px 8px;background:rgba(0,230,180,0.1);border:1px solid var(--accent);border-radius:3px;color:var(--accent)">LIVE</span>
+            </div>
+            <p class="project-desc">Dark-luxury cinematography website for a photographer/videographer/drone team. Single-file HTML/CSS/JS with free-tier API integrations.</p>
+            <div class="project-tags">
+              <span class="project-tag">HTML</span>
+              <span class="project-tag">CSS</span>
+              <span class="project-tag">JavaScript</span>
+              <span class="project-tag">Free APIs</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link"><i class="fas fa-external-link-alt"></i>Live Demo</a>
+              <a href="#" class="project-link"><i class="fab fa-github"></i>GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 reveal">
+        <div class="project-card">
+          <div class="project-thumb" style="background:linear-gradient(135deg,#0d2e1a,#0a1e2e)">🤖</div>
+          <div class="project-body">
+            <div class="project-title">Multi-AI Chatbot</div>
+            <p class="project-desc">Django app integrating multiple AI providers (SambaNova, OpenAI-compatible) with parallel health-check dashboard.</p>
+            <div class="project-tags">
+              <span class="project-tag">Django</span>
+              <span class="project-tag">SambaNova</span>
+              <span class="project-tag">OpenAI</span>
+              <span class="project-tag">Dashboard</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link"><i class="fab fa-github"></i>GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline" style="padding:100px 0;">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="reveal">
+          <p class="section-label">// Education</p>
+          <h2 class="section-title">Academic <span style="color:var(--accent)">Journey</span></h2>
+          <div class="section-divider"></div>
+        </div>
+        <div class="timeline-line">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">2022 — 2025</div>
+            <div class="timeline-title">Diploma in Computer Science Engineering</div>
+            <div class="timeline-sub">Polytechnic College, Indore, MP</div>
+            <div class="timeline-body">Focus on web development, databases, networking. Built multiple live projects during course.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">Upcoming</div>
+            <div class="timeline-title">B.Tech CSE (Lateral Entry)</div>
+            <div class="timeline-sub">IGNOU / State University</div>
+            <div class="timeline-body">Planning lateral entry into B.Tech 2nd year. Exploring IGNOU B.Tech CS Lateral Entry program.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">Self-Taught</div>
+            <div class="timeline-title">Full Stack Development</div>
+            <div class="timeline-sub">Online Courses + Real Projects</div>
+            <div class="timeline-body">Django, Flask, React, Supabase, REST APIs, cloud deployment — all learned by building real apps.</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 mt-5 mt-lg-0">
+        <div class="reveal">
+          <p class="section-label">// Experience</p>
+          <h2 class="section-title">Work & <span style="color:var(--accent)">Projects</span></h2>
+          <div class="section-divider"></div>
+        </div>
+        <div class="timeline-line">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">2024 — Present</div>
+            <div class="timeline-title">Freelance Full Stack Developer</div>
+            <div class="timeline-sub">Remote / Indore</div>
+            <div class="timeline-body">Building web apps for clients. Specializing in Django backends, portfolio sites, and small business tools.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">2023 — 2024</div>
+            <div class="timeline-title">Personal Projects & Portfolio Building</div>
+            <div class="timeline-sub">Open Source / GitHub</div>
+            <div class="timeline-body">Built Cameramen Hub, LensConnect, Frame Studio, and AI chatbot. All deployed on production infrastructure.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-year">2022</div>
+            <div class="timeline-title">Started Coding Journey</div>
+            <div class="timeline-sub">Python & Web Basics</div>
+            <div class="timeline-body">Learned Python, HTML/CSS basics. Built first Flask app within 6 months of starting college.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="padding:100px 0; background:var(--bg2)">
+  <div class="container">
+    <div class="text-center reveal">
+      <p class="section-label">// Let's Talk</p>
+      <h2 class="section-title">Get In <span style="color:var(--accent)">Touch</span></h2>
+      <div class="section-divider mx-auto"></div>
+      <p style="color:var(--muted);max-width:480px;margin:0 auto 3rem;font-size:0.95rem;line-height:1.8">
+        Open to freelance work, internships, and full-time roles. Let's build something cool together.
+      </p>
+    </div>
+    <div class="row g-5 justify-content-center">
+      <div class="col-lg-5 reveal">
+        <div class="contact-form">
+          <input type="text" placeholder="Your Name">
+          <input type="email" placeholder="Your Email">
+          <input type="text" placeholder="Subject">
+          <textarea placeholder="Your Message"></textarea>
+          <button class="btn-accent w-100" style="padding:0.9rem;border-radius:4px;cursor:pointer;font-size:0.85rem">
+            <i class="fas fa-paper-plane me-2"></i> Send Message
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-4 reveal">
+        <div class="glass-card">
+          <h5 style="font-family:var(--mono);font-size:0.75rem;letter-spacing:3px;color:var(--muted);margin-bottom:1.5rem;text-transform:uppercase">// Find Me Online</h5>
+          <a href="#" class="social-link">
+            <i class="fab fa-github"></i>
+            <div>
+              <div style="font-size:0.85rem;font-weight:600">GitHub</div>
+              <div style="font-size:0.75rem;color:var(--muted)">github.com/anusharma</div>
+            </div>
+          </a>
+          <a href="#" class="social-link">
+            <i class="fab fa-linkedin"></i>
+            <div>
+              <div style="font-size:0.85rem;font-weight:600">LinkedIn</div>
+              <div style="font-size:0.75rem;color:var(--muted)">linkedin.com/in/anusharma</div>
+            </div>
+          </a>
+          <a href="#" class="social-link">
+            <i class="fas fa-envelope"></i>
+            <div>
+              <div style="font-size:0.85rem;font-weight:600">Email</div>
+              <div style="font-size:0.75rem;color:var(--muted)">anu@example.com</div>
+            </div>
+          </a>
+          <a href="#" class="social-link" style="border:none">
+            <i class="fab fa-instagram"></i>
+            <div>
+              <div style="font-size:0.85rem;font-weight:600">Instagram</div>
+              <div style="font-size:0.75rem;color:var(--muted)">@anusharma.dev</div>
+            </div>
+          </a>
+          <div style="margin-top:2rem;padding:1rem;background:rgba(0,230,180,0.05);border:1px solid var(--border);border-radius:8px;text-align:center">
+            <div style="font-family:var(--mono);font-size:0.7rem;color:var(--muted);letter-spacing:1px;margin-bottom:0.5rem">RESPONSE TIME</div>
+            <div style="font-size:1.1rem;font-weight:700;color:var(--accent)">Within 24 Hours</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>Designed & Built by <span style="color:var(--accent)">Anu Sharma</span> · Indore, India 🇮🇳</p>
+    <p style="margin-top:0.5rem;font-size:0.62rem">Django · Flask · React · Supabase · Bootstrap</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// TYPING EFFECT
+const roles = ["Full Stack Developer", "Django Engineer", "Flask Developer", "SaaS Builder", "Open to Work 🚀"];
+let ri = 0, ci = 0, deleting = false;
+const el = document.getElementById('typed-text');
+function type() {
+  const cur = roles[ri];
+  if (!deleting) {
+    el.textContent = cur.slice(0, ++ci);
+    if (ci === cur.length) { deleting = true; setTimeout(type, 1800); return; }
+  } else {
+    el.textContent = cur.slice(0, --ci);
+    if (ci === 0) { deleting = false; ri = (ri + 1) % roles.length; }
+  }
+  setTimeout(type, deleting ? 50 : 90);
+}
+type();
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Animate skill bars
+      e.target.querySelectorAll('.skill-fill').forEach(bar => {
+        bar.style.width = bar.dataset.w + '%';
+      });
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal, .timeline-item').forEach(el => observer.observe(el));
+
+// Global skill bar trigger
+document.querySelectorAll('.skill-fill').forEach(bar => {
+  new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) bar.style.width = bar.dataset.w + '%';
+  }, {threshold: 0.5}).observe(bar);
+});
+</script>
+</body>
+</html>
